@@ -1181,12 +1181,24 @@
     return Fullscreen._jQueryInterface;
   };
 
-  /**
-   * --------------------------------------------
-   * AdminLTE IFrame.js
-   * License MIT
-   * --------------------------------------------
-   */
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
+    return _extends.apply(this, arguments);
+  }
+
   /**
    * Constants
    * ====================================================
@@ -1630,7 +1642,7 @@
     } // Static
     ;
 
-    IFrame._jQueryInterface = function _jQueryInterface(config) {
+    IFrame._jQueryInterface = function _jQueryInterface(config, name, link, id, reload) {
       if ($__default["default"](SELECTOR_DATA_TOGGLE$1).length > 0) {
         var data = $__default["default"](this).data(DATA_KEY$7);
 
@@ -1642,13 +1654,19 @@
 
         localStorage.setItem('AdminLTE:IFrame:Options', JSON.stringify(_options));
         var plugin = new IFrame($__default["default"](this), _options);
-        $__default["default"](this).data(DATA_KEY$7, typeof config === 'object' ? config : data);
+        window.iFrameInstance = plugin;
+        $__default["default"](this).data(DATA_KEY$7, typeof config === 'object' ? config : _extends({
+          link: link,
+          name: name,
+          id: id,
+          reload: reload
+        }, data));
 
         if (typeof config === 'string' && /createTab|openTabSidebar|switchTab|removeActiveTab/.test(config)) {
           plugin[config]();
         }
       } else {
-        new IFrame($__default["default"](this), JSON.parse(localStorage.getItem('AdminLTE:IFrame:Options')))._initFrameElement();
+        window.iFrameInstance = new IFrame($__default["default"](this), JSON.parse(localStorage.getItem('AdminLTE:IFrame:Options')))._initFrameElement();
       }
     };
 
